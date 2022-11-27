@@ -1,0 +1,14 @@
+
+version: '3'
+
+services:
+    ubuntu-gcc:
+        build: 
+            context: ./
+            dockerfile: Dockerfile
+        image: wagnerr63/ubuntu-gcc
+        container_name: ubuntu-gcc
+        restart: always
+        tty: true
+        volumes: 
+            - .:/usr/src/app
