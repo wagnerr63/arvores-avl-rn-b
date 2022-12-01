@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "b.h"
 
 ArvoreB* criaArvore(int ordem) {
@@ -165,13 +166,40 @@ void adicionaChave(ArvoreB* arvore, int chave) {
     adicionaChaveRecursivo(arvore, no, NULL, chave);
 }
 
+int random_number(int min_num, int max_num)
+    {
+        int result = 0, low_num = 0, hi_num = 0;
+
+        if (min_num < max_num)
+        {
+            low_num = min_num;
+            hi_num = max_num + 1; // include max_num in output
+        } else {
+            low_num = max_num + 1; // include max_num in output
+            hi_num = min_num;
+        }
+
+        srand(time(NULL));
+        result = (rand() % (hi_num - low_num)) + low_num;
+        return result;
+    }
+
+
 int main() {
     ArvoreB* arvore = criaArvore(1);
-
-    for (int i = 0;i<1000;i++) {
-        int r = rand() % 1000;
-        adicionaChave(arvore, r);
+    srand(time(NULL));
+    int i = 0;
+    while(i<10) {
+        int r = random_number(0, 10);
+        //printf("pesquisa %d \n", pesquisaBinaria(arvore->raiz, r));
+        if (pesquisaBinaria(arvore->raiz, r)==0 && r!=0) {
+            printf("R %d \n", r);
+            adicionaChave(arvore, r);
+            i++;
+        }
     }
+
+    contador = 0;
 
     percorreArvore(arvore->raiz);
     pesquisaBinaria(arvore->raiz, 99);

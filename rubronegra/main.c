@@ -198,7 +198,7 @@ void rotacionarDireita(Arvore* arvore, No* no) {
     esquerda->direita = no;
     no->pai = esquerda;
 }
-/*
+
 int main() {
     Arvore* a = criar();
 
@@ -214,4 +214,3 @@ int main() {
     percorrerProfundidadeInOrder(a, a->raiz,visitar);
     printf("\n");
 }
-*/
