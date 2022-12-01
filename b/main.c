@@ -33,7 +33,7 @@ void percorreArvore(No* no) {
         for (int i = 0; i < no->total; i++){
             percorreArvore(no->filhos[i]); //visita o filho a esquerda
             
-            //printf("%d ",no->chaves[i]);
+            printf("%d ",no->chaves[i]);
         }
 
         percorreArvore(no->filhos[no->total]); //visita ultimo filho (direita)
@@ -42,8 +42,6 @@ void percorreArvore(No* no) {
 
 int pesquisaBinaria(No* no, int chave) {
     int inicio = 0, fim = no->total - 1, meio;
-
-    printf("%d ", fim);
     
     while (inicio <= fim) {	
         contador++;
@@ -169,8 +167,6 @@ void adicionaChave(ArvoreB* arvore, int chave) {
 
 int main() {
     ArvoreB* arvore = criaArvore(1);
-    
-    int contador = 0;
 
     adicionaChave(arvore, 12);
     adicionaChave(arvore, 3);
@@ -181,6 +177,7 @@ int main() {
     adicionaChave(arvore, 1);
 
     percorreArvore(arvore->raiz);
+    pesquisaBinaria(arvore->raiz, 99);
 
     printf("\nNúmero de operações: %d\n", contador);
 
