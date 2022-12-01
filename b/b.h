@@ -11,6 +11,7 @@ typedef struct arvoreB {
   int ordem;
 } ArvoreB;
 
+
 ArvoreB* criaArvore(int);
 No* criaNo(ArvoreB*);
 void percorreArvore(No*);

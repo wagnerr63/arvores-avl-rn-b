@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "avl.h"
 
+
 int main() {
     Arvore* a = criar();
 
