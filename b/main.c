@@ -168,13 +168,10 @@ void adicionaChave(ArvoreB* arvore, int chave) {
 int main() {
     ArvoreB* arvore = criaArvore(1);
 
-    adicionaChave(arvore, 12);
-    adicionaChave(arvore, 3);
-    adicionaChave(arvore, 5);
-    adicionaChave(arvore, 7);
-    adicionaChave(arvore, 15);
-    adicionaChave(arvore, 99);
-    adicionaChave(arvore, 1);
+    for (int i = 0;i<1000;i++) {
+        int r = rand() % 1000;
+        adicionaChave(arvore, r);
+    }
 
     percorreArvore(arvore->raiz);
     pesquisaBinaria(arvore->raiz, 99);
