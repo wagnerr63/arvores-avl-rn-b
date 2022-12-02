@@ -267,7 +267,6 @@ void rotacionarDireita(Arvore* arvore, No* no) {
     no->pai = esquerda;
 }
 
-
 int main() {
     Arvore* a = criar();
 
