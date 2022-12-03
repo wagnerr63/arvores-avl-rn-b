@@ -234,6 +234,7 @@ int main() {
 
     //Criar um vetor com mil numeros aleatorios que não se repetem
     int v[1000], numero;
+    srand ( time(NULL) );
     for (int i = 0; i < 1000; i++){
         numero = rand() % 1000;
         for (int j = 0; j < i+1; j++){
@@ -248,33 +249,22 @@ int main() {
         }
     }
     //Vetor v criado com mil numeros
-
-
-    for (int i = 0; i < 1000; i++)
-    {
-        printf(": %i\n", v[i]);
-    }
     
-    
+    //Arvore a com caso medio
     Arvore* a = criar(); 
-
-    adicionar(a,7); 
-    adicionar(a,6); 
-    adicionar(a,5); 
-    adicionar(a,4); 
-    adicionar(a,3); 
-    adicionar(a,2); 
-    adicionar(a,1); 
+    for (int i = 0; i < 1000; i++){
+        adicionar(a, v[i]);
+    }
 
     printf("Contador: %i\n", contador); 
-    contador=0; 
+    contador=0;
 
+    //Arvore b com pior caso
     Arvore* b = criar(); 
-
-    adicionar(b,2); 
-    adicionar(b,4); 
-    adicionar(b,3); 
-  
+    for (int i = 0; i < 100; i++){
+        adicionar(b, i);
+    }
+    
     printf("Contador: %i\n", contador); 
     contador=0; 
     printf("\n");
