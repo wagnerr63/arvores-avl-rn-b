@@ -23,3 +23,6 @@ int transbordo(ArvoreB*,No*);
 No* divideNo(ArvoreB*, No*);
 void adicionaChaveRecursivo(ArvoreB*, No*, No*, int);
 void adicionaChave(ArvoreB*, int);
+
+int fillWithRandomNumbers(ArvoreB* arvore, int quantity);
+int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity);

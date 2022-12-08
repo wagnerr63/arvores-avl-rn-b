@@ -210,6 +210,7 @@ int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
     return 0;
 }
 
+/*
 int main() {
 
     FILE *arquivo;
@@ -253,3 +254,4 @@ int main() {
   
 
 }
+*/
