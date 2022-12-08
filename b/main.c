@@ -184,12 +184,12 @@ int findValueInArray(int array[], int size, int value) {
 
 int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     int i = 0;
-    int numbers[100];
+    int numbers[1000];
 
     while(i!=quantity) {
         int randNumber = random_number(quantity);
         
-        if(findValueInArray(numbers, 100, randNumber)==0) {
+        if(findValueInArray(numbers, 1000, randNumber)==0) {
             numbers[i] = randNumber;
             adicionaChave(arvore, randNumber);
             i++;
@@ -204,7 +204,7 @@ int main() {
     
     srand(time(NULL));
 
-    fillWithRandomNumbers(arvore, 100);
+    fillWithRandomNumbers(arvore, 1000);
 
     percorreArvore(arvore->raiz);
     pesquisaBinaria(arvore->raiz, 99);
