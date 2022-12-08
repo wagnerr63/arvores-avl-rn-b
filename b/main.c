@@ -184,13 +184,16 @@ int findValueInArray(int array[], int size, int value) {
 
 int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     int i = 0;
-    int numbers[1000];
+    int numbers[1024];
+    for (int i=0; i<1024; i++) {
+        numbers[i]=-1;
+    }
     srand(time(NULL));
 
     while(i!=quantity) {
         int randNumber = random_number(quantity);
         
-        if(findValueInArray(numbers, 1000, randNumber)==0) {
+        if(findValueInArray(numbers, 1024, randNumber)==0) {
             numbers[i] = randNumber;
             adicionaChave(arvore, randNumber);
             i++;
@@ -208,24 +211,45 @@ int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
 }
 
 int main() {
-    ArvoreB* arvore = criaArvore(1);
 
-    fillWithRandomNumbers(arvore, 1000);
+    FILE *arquivo;
+    arquivo = fopen("bMedioCaso.csv", "w");
+    fprintf(arquivo, "%s", "tamanho,esforco;\n");
 
-    //percorreArvore(arvore->raiz);
+    int tamanho = 2;
+    
+    for (int i =0;i<10;i++) {
+        ArvoreB* arvore = criaArvore(1);
+        fillWithRandomNumbers(arvore, tamanho);
 
-    printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
-
+        printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
+        fprintf(arquivo, "%i,%i;\n", tamanho,contador);
+        contador = 0;
+        
+        tamanho = tamanho*2;
+    
+        free(arvore);
+    }
 
 
     contador = 0;
-    ArvoreB* arvorePior = criaArvore(1);
-    
+    tamanho = 2;
+    arquivo = fopen("bPiorCaso.csv", "w");
+    fprintf(arquivo, "%s", "tamanho,esforco;\n");
+    for (int j =0;j<10;j++) {
+        ArvoreB* arvorePior = criaArvore(1);
+        fillWithRandomNumbersASC(arvorePior, tamanho);
 
-    fillWithRandomNumbersASC(arvorePior, 1000);
+        printf("\nNúmero de operações no PIOR CASO: %d\n", contador);
+        
+        fprintf(arquivo, "%i,%i;\n", tamanho,contador);
 
-    //percorreArvore(arvore->raiz);
 
-    printf("\nNúmero de operações no PIOR CASO: %d\n", contador);    
+        contador = 0;
+        tamanho = tamanho*2;
+
+        free(arvorePior);  
+    }
+  
 
 }
