@@ -172,42 +172,42 @@ int random_number(int range){
     return num;
 }
 
+int findValueInArray(int array[], int size, int value) {
+    for(int i=0; i<size; i++) {
+        if (array[i]==value) {
+            return 1; // found
+        }
+    }
+
+    return 0; // not found
+}
+
+int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
+    int i = 0;
+    int numbers[100];
+
+    while(i!=quantity) {
+        int randNumber = random_number(quantity);
+        
+        if(findValueInArray(numbers, 100, randNumber)==0) {
+            numbers[i] = randNumber;
+            adicionaChave(arvore, randNumber);
+            i++;
+        }
+    }
+
+    return 0;
+}
+
 int main() {
     ArvoreB* arvore = criaArvore(1);
-    int i = 0;
-    int j = 0;
-    int limit = 5;
-    int n;
-    int numbers[100];
     
     srand(time(NULL));
 
-    while(i<limit) {
-        int r = random_number(limit);
-
-        int found = 0;
-        for(j = 0; j < i + 1; j++){
-            if(numbers[j] == r){
-                found = 1;
-            }
-        }
-
-        if(found==0){
-            numbers[i] = r;
-            printf("R %d \n", r);
-            adicionaChave(arvore, r);
-            i++;
-        }
-        // for(j = 0; j < i+1; j++){
-        //     printf("%d - ", numbers[j]);
-        // }
-        // printf("\n");
-    }
-
-    contador = 0;
+    fillWithRandomNumbers(arvore, 100);
 
     percorreArvore(arvore->raiz);
-    // pesquisaBinaria(arvore->raiz, 99);
+    pesquisaBinaria(arvore->raiz, 99);
 
     printf("\nNúmero de operações: %d\n", contador);
 
