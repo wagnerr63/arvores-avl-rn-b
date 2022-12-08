@@ -185,6 +185,7 @@ int findValueInArray(int array[], int size, int value) {
 int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     int i = 0;
     int numbers[1000];
+    srand(time(NULL));
 
     while(i!=quantity) {
         int randNumber = random_number(quantity);
@@ -199,16 +200,32 @@ int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     return 0;
 }
 
+int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
+    for(int i=0; i<quantity; i++) {
+        adicionaChave(arvore, i);
+    }
+    return 0;
+}
+
 int main() {
     ArvoreB* arvore = criaArvore(1);
-    
-    srand(time(NULL));
 
     fillWithRandomNumbers(arvore, 1000);
 
-    percorreArvore(arvore->raiz);
-    pesquisaBinaria(arvore->raiz, 99);
+    //percorreArvore(arvore->raiz);
 
-    printf("\nNúmero de operações: %d\n", contador);
+    printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
+
+
+
+    contador = 0;
+    ArvoreB* arvorePior = criaArvore(1);
+    
+
+    fillWithRandomNumbersASC(arvorePior, 1000);
+
+    //percorreArvore(arvore->raiz);
+
+    printf("\nNúmero de operações no PIOR CASO: %d\n", contador);    
 
 }
