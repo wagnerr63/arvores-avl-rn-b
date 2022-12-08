@@ -250,22 +250,40 @@ int main() {
     }
     //Vetor v criado com mil numeros
     
-    //Arvore a com caso medio
-    Arvore* a = criar(); 
-    for (int i = 0; i < 1000; i++){
-        adicionar(a, v[i]);
+    FILE *arquivo;
+
+    arquivo = fopen("teste.csv", "w");
+
+    if (arquivo==NULL){
+        printf("Erro ao abrir arquivo\n");
     }
 
-    printf("Contador: %i\n", contador); 
-    contador=0;
-
-    //Arvore b com pior caso
-    Arvore* b = criar(); 
-    for (int i = 0; i < 100; i++){
-        adicionar(b, i);
-    }
+    fprintf(arquivo, "%s", "RN Caso Médio;RN Pior Caso;\n");
     
-    printf("Contador: %i\n", contador); 
-    contador=0; 
-    printf("\n");
+    for (int j = 1; j < 100; j++){
+        printf("%i\n", j);
+        //Arvore a com caso medio
+        Arvore* a = criar(); 
+        for (int i = 0; i < j; i++){
+            adicionar(a, v[i]);
+        }
+
+        fprintf(arquivo, "%i", contador);
+        fprintf(arquivo, "%s", ";");
+        contador=0;
+        free(a);
+
+        //Arvore b com pior caso
+        Arvore* b = criar(); 
+        for (int i = 0; i < j; i++){
+            adicionar(b, i);
+        }
+
+        fprintf(arquivo, "%i", contador);
+        fprintf(arquivo, "%s", ";\n");
+        contador=0; 
+        free(b);
+
+    }
+    fclose (arquivo);
 }
