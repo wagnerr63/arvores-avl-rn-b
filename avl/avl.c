@@ -1,25 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef struct AVLno {
-    struct AVLno* pai;
-    struct AVLno* esquerda;
-    struct AVLno* direita;
-    int valor;
-} AVLNo;
-
-typedef struct AVLarvore {
-    struct AVLno* raiz;
-} AVLArvore;
+#include "avl.h"
 
 int AVLcontador = 0;
-void AVLbalanceamento(AVLArvore*, AVLNo*);
-int AVLaltura(AVLNo*);
-int fb(AVLNo*);
-AVLNo* rsd(AVLArvore*, AVLNo*);
-AVLNo* rse(AVLArvore*, AVLNo*);
-AVLNo* rdd(AVLArvore*, AVLNo*);
-AVLNo* rde(AVLArvore*, AVLNo*);
 
 AVLArvore* AVLcriar() {
     AVLArvore *AVLarvore = malloc(sizeof(AVLArvore));
@@ -65,6 +48,7 @@ AVLNo* AVLadicionar(AVLArvore* AVLarvore, int valor) {
     if (AVLarvore->raiz == NULL) {
         printf("Adicionando %d\n",valor);
         AVLNo* AVLnovo = malloc(sizeof(AVLNo));
+        printf("aq 1");
         AVLnovo->valor = valor;
         AVLarvore->raiz = AVLnovo;
         return AVLnovo;
@@ -73,6 +57,7 @@ AVLNo* AVLadicionar(AVLArvore* AVLarvore, int valor) {
         AVLbalanceamento(AVLarvore, AVLno);
         return AVLno;
     }
+      printf("aq 2");
 }
 
 void AVLremover(AVLArvore* AVLarvore, AVLNo* AVLno) {
@@ -254,8 +239,8 @@ AVLNo* rdd(AVLArvore* AVLarvore, AVLNo* AVLno) {
     return rsd(AVLarvore, AVLno);
 }
 
-int main() {
 
+int main() {
     AVLArvore* a = AVLcriar();
 
     for (int i = 1; i <= 7; i++) {
@@ -278,5 +263,4 @@ int main() {
     printf("Contador: %i\n", AVLcontador);
     printf("\n");
     AVLcontador=0;
-
 }

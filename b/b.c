@@ -166,50 +166,6 @@ void bAdicionaChave(ArvoreB* arvore, int chave) {
     bAdicionaChaveRecursivo(arvore, no, NULL, chave);
 }
 
-int random_number(int range){
-    int num;
-    num = rand() % range;
-    return num;
-}
-
-int findValueInArray(int array[], int size, int value) {
-    for(int i=0; i<size; i++) {
-        if (array[i]==value) {
-            return 1; // found
-        }
-    }
-
-    return 0; // not found
-}
-
-int bFillWithRandomNumbers(ArvoreB* arvore, int quantity) {
-    int i = 0;
-    int numbers[1024];
-    for (int i=0; i<1024; i++) {
-        numbers[i]=-1;
-    }
-    srand(time(NULL));
-
-    while(i!=quantity) {
-        int randNumber = random_number(quantity);
-        
-        if(findValueInArray(numbers, 1024, randNumber)==0) {
-            numbers[i] = randNumber;
-            bAdicionaChave(arvore, randNumber);
-            i++;
-        }
-    }
-
-    return 0;
-}
-
-int bFillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
-    for(int i=0; i<quantity; i++) {
-        bAdicionaChave(arvore, i);
-    }
-    return 0;
-}
-
 /*
 int main() {
 

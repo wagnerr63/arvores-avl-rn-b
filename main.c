@@ -3,6 +3,7 @@
 #include <time.h>
 #include "b/b.h"
 #include "rubronegra/rubronegra.h"
+#include "avl/avl.h"
 
 int findValueInArray(int array[], int size, int value) {
     for(int i=0; i<size; i++) {
@@ -27,7 +28,6 @@ void popula(int vetor[], int tamanho){
 }
 
 int main() {
-    extern int bContador;
     /*
      FILE *arquivo;
     arquivo = fopen("bMedioCaso.csv", "w");
@@ -70,6 +70,7 @@ int main() {
     */
 
     extern int RNcontador;
+    extern int bContador;
 
     int v[1000]; 
     srand ( time(NULL) );  
@@ -102,13 +103,27 @@ int main() {
             popula(v,j);
             
             RNArvore* a = RNcriar(); 
+            ArvoreB* arvoreB = criaArvoreB(1);
+            ArvoreB* arvoreBOrdem5 = criaArvoreB(5);
+            ArvoreB* arvoreBOrdem10 = criaArvoreB(10);
+            
             //AVLArvore* b = AVLcriar(); 
 
             for (int i = 0; i < j; i++){ 
                 RNcontador=0;
+                bContador=0;
                 //printf("%d: %d\n",i, v[i]);
                 RNadicionar(a, v[i]);
                 media_rn+=RNcontador; 
+
+                bAdicionaChave(arvoreB, v[i]);
+                media_b1+=bContador;
+                bContador=0;
+                bAdicionaChave(arvoreBOrdem5, v[i]);
+                media_b5+=bContador;
+                bContador=0;
+                bAdicionaChave(arvoreBOrdem10, v[i]);
+                media_b10+=bContador;
   
                 //AVLcontador=0; 
                 //adicinarAVL=(b, v[i]); 
@@ -116,10 +131,16 @@ int main() {
 
             } 
             free(a);
+            free(arvoreB);
+            free(arvoreBOrdem5);
+            free(arvoreBOrdem10);
             //free(v);
         } 
 
         fprintf(arquivomedio, "%d;%ld", j, media_rn/10); 
+        fprintf(arquivomedio, "%d;%ld", j, media_b1/10); 
+        fprintf(arquivomedio, "%d;%ld", j, media_b5/10); 
+        fprintf(arquivomedio, "%d;%ld", j, media_b10/10); 
         //fprintf(arquivomedio, "%d;%ld", j, media_avl/10);
         fprintf(arquivomedio, "\n"); 
 
@@ -150,6 +171,5 @@ int main() {
     } 
     fclose (arquivomedio);
     fclose (arquivopior);
-
   
 }
