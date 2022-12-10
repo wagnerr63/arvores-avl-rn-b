@@ -11,7 +11,7 @@ ArvoreB* criaArvoreB(int ordem) {
     return a;
 }
 
-int contador = 0;
+int bContador = 0;
 
 No* bCriaNo(ArvoreB* arvore) {
     int max = arvore->ordem * 2;
@@ -45,7 +45,7 @@ int bPesquisaBinaria(No* no, int chave) {
     int inicio = 0, fim = no->total - 1, meio;
     
     while (inicio <= fim) {	
-        contador++;
+        bContador++;
         
         meio = (inicio + fim) / 2;
         
@@ -80,7 +80,7 @@ No* bLocalizaNo(ArvoreB* arvore, int chave) {
     No *no = arvore->raiz;
     
     while (no != NULL) {
-        contador++;
+        bContador++;
 
         int i = bPesquisaBinaria(no, chave);
 
@@ -96,7 +96,7 @@ No* bLocalizaNo(ArvoreB* arvore, int chave) {
 void bbAdicionaChaveNo(No* no, No* novo, int chave) {
     int i = bPesquisaBinaria(no, chave);
     
-    contador++;
+    bContador++;
 
     for (int j = no->total - 1; j >= i; j--) {
         no->chaves[j + 1] = no->chaves[j];
@@ -110,7 +110,7 @@ void bbAdicionaChaveNo(No* no, No* novo, int chave) {
 }
 
 int bTransbordo(ArvoreB* arvore, No* no) {
-    contador++;
+    bContador++;
     
     return no->total > arvore->ordem * 2;
 }
@@ -120,7 +120,7 @@ No* bDivideNo(ArvoreB* arvore, No* no) {
     No* novo = bCriaNo(arvore);
     novo->pai = no->pai;
 
-    contador++;
+    bContador++;
     
     for (int i = meio + 1; i < no->total; i++) {
         novo->filhos[novo->total] = no->filhos[i];
@@ -137,7 +137,7 @@ No* bDivideNo(ArvoreB* arvore, No* no) {
 }
 
 void bAdicionaChaveRecursivo(ArvoreB* arvore, No* no, No* novo, int chave) {
-    contador++;
+    bContador++;
     
     bbAdicionaChaveNo(no, novo, chave);
     
@@ -146,7 +146,7 @@ void bAdicionaChaveRecursivo(ArvoreB* arvore, No* no, No* novo, int chave) {
         No* novo = bDivideNo(arvore, no);
 
         if (no->pai == NULL) {
-            contador++;
+            bContador++;
             
             No* pai = bCriaNo(arvore);            
             pai->filhos[0] = no;
@@ -223,9 +223,9 @@ int main() {
         ArvoreB* arvore = criaArvoreB(1);
         bFillWithRandomNumbers(arvore, tamanho);
 
-        printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
-        fprintf(arquivo, "%i,%i;\n", tamanho,contador);
-        contador = 0;
+        printf("\nNúmero de operações no MÉDIO CASO: %d\n", bContador);
+        fprintf(arquivo, "%i,%i;\n", tamanho,bContador);
+        bContador = 0;
         
         tamanho = tamanho*2;
     
@@ -233,7 +233,7 @@ int main() {
     }
 
 
-    contador = 0;
+    bContador = 0;
     tamanho = 2;
     arquivo = fopen("bPiorCaso.csv", "w");
     fprintf(arquivo, "%s", "tamanho,esforco;\n");
@@ -241,12 +241,12 @@ int main() {
         ArvoreB* arvorePior = criaArvoreB(1);
         bFillWithRandomNumbersASC(arvorePior, tamanho);
 
-        printf("\nNúmero de operações no PIOR CASO: %d\n", contador);
+        printf("\nNúmero de operações no PIOR CASO: %d\n", bContador);
         
-        fprintf(arquivo, "%i,%i;\n", tamanho,contador);
+        fprintf(arquivo, "%i,%i;\n", tamanho,bContador);
 
 
-        contador = 0;
+        bContador = 0;
         tamanho = tamanho*2;
 
         free(arvorePior);  
