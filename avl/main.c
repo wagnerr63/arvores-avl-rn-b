@@ -21,7 +21,7 @@ AVLNo* rse(AVLArvore*, AVLNo*);
 AVLNo* rdd(AVLArvore*, AVLNo*);
 AVLNo* rde(AVLArvore*, AVLNo*);
 
-AVLArvore* criar() {
+AVLArvore* AVLcriar() {
     AVLArvore *AVLarvore = malloc(sizeof(AVLArvore));
     AVLarvore->raiz = NULL;
 
@@ -256,7 +256,7 @@ AVLNo* rdd(AVLArvore* AVLarvore, AVLNo* AVLno) {
 
 int main() {
 
-    AVLArvore* a = criar();
+    AVLArvore* a = AVLcriar();
 
     for (int i = 1; i <= 7; i++) {
         AVLadicionar(a,i);
@@ -266,7 +266,7 @@ int main() {
     printf("Contador: %i\n", AVLcontador);
     AVLcontador=0;
 
-    AVLArvore* b = criar();
+    AVLArvore* b = AVLcriar();
 
     AVLadicionar(b,4);
     AVLadicionar(b,2);
