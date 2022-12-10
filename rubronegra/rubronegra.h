@@ -1,27 +1,25 @@
-enum coloracao { Vermelho, Preto };
-typedef enum coloracao Cor;
+enum coloracao { Vermelho, Preto }; 
+typedef enum coloracao Cor; 
 
-typedef struct no {
-    struct no* pai;
-    struct no* esquerda;
-    struct no* direita;
-    Cor cor;
-    int valor;
-} No;
+typedef struct RNno { 
+    struct RNno* pai; 
+    struct RNno* esquerda; 
+    struct RNno* direita; 
+    Cor cor; 
+    int valor; 
+} RNNo; 
 
-typedef struct arvore {
-    struct no* raiz;
-    struct no* nulo; 
-} Arvore;
+typedef struct RNarvore { 
+    struct RNno* raiz; 
+    struct RNno* nulo;  
+} RNArvore; 
 
+RNNo* criarRNNo(RNArvore*, RNNo*, int); 
+void RNbalancear(RNArvore*, RNNo*); 
+void rotacionarEsquerda(RNArvore*, RNNo*); 
+void rotacionarDireita(RNArvore*, RNNo*); 
 
-No* criarNo(Arvore*, No*, int);
-void balancear(Arvore*, No*);
-void rotacionarEsquerda(Arvore*, No*);
-void rotacionarDireita(Arvore*, No*);
-
-
-Arvore* criar();
-int vazia(Arvore*);
-No* adicionar(Arvore*, int);
-No* localizar(Arvore* arvore, int valor);
+RNArvore* RNcriar(); 
+int RNvazia(RNArvore*); 
+RNNo* RNadicionar(RNArvore*, int); 
+RNNo* RNlocalizar(RNArvore* RNarvore, int valor); 
