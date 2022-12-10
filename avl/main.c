@@ -1,575 +1,282 @@
 #include <stdlib.h>
-
 #include <stdio.h>
 
-
-
-typedef struct no {
-
-    struct no* pai;
-
-    struct no* esquerda;
-
-    struct no* direita;
-
+typedef struct AVLno {
+    struct AVLno* pai;
+    struct AVLno* esquerda;
+    struct AVLno* direita;
     int valor;
+} AVLNo;
 
-} No;
+typedef struct AVLarvore {
+    struct AVLno* raiz;
+} AVLArvore;
 
+int AVLcontador = 0;
+void AVLbalanceamento(AVLArvore*, AVLNo*);
+int AVLaltura(AVLNo*);
+int fb(AVLNo*);
+AVLNo* rsd(AVLArvore*, AVLNo*);
+AVLNo* rse(AVLArvore*, AVLNo*);
+AVLNo* rdd(AVLArvore*, AVLNo*);
+AVLNo* rde(AVLArvore*, AVLNo*);
 
+AVLArvore* criar() {
+    AVLArvore *AVLarvore = malloc(sizeof(AVLArvore));
+    AVLarvore->raiz = NULL;
 
-typedef struct arvore {
-
-    struct no* raiz;
-
-} Arvore;
-
-
-
-int contador = 0;
-
-void balanceamento(Arvore*, No*);
-
-int altura(No*);
-
-int fb(No*);
-
-No* rsd(Arvore*, No*);
-
-No* rse(Arvore*, No*);
-
-No* rdd(Arvore*, No*);
-
-No* rde(Arvore*, No*);
-
-
-
-Arvore* criar() {
-
-    Arvore *arvore = malloc(sizeof(Arvore));
-
-    arvore->raiz = NULL;
-
-
-
-    return arvore;
-
+    return AVLarvore;
 }
 
-
-
-int vazia(Arvore* arvore) {
-
-    return arvore->raiz == NULL;
-
+int AVLvazia(AVLArvore* AVLarvore) {
+    return AVLarvore->raiz == NULL;
 }
 
-
-
-No* adicionarNo(No* no, int valor) {
-
-    contador++;
-
-    if (valor > no->valor) {
-
-        if (no->direita == NULL) {
-
+AVLNo* AVLadicionarNo(AVLNo* AVLno, int valor) {
+    AVLcontador++;
+    if (valor > AVLno->valor) {
+        if (AVLno->direita == NULL) {
             printf("Adicionando %d\n",valor);
+            AVLNo* AVLnovo = malloc(sizeof(AVLNo));
+            AVLnovo->valor = valor;
+            AVLnovo->pai = AVLno;
+            AVLno->direita = AVLnovo;
 
-            No* novo = malloc(sizeof(No));
-
-            novo->valor = valor;
-
-            novo->pai = no;
-
-
-
-            no->direita = novo;
-
-            return novo;
-
+            return AVLnovo;
         } else {
-
-            return adicionarNo(no->direita, valor);
-
+            return AVLadicionarNo(AVLno->direita, valor);
         }
-
     } else {
-
-        if (no->esquerda == NULL) {
-
+        if (AVLno->esquerda == NULL) {
             printf("Adicionando %d\n",valor);
-
-            No* novo = malloc(sizeof(No));
-
-novo->valor = valor;
-
-            novo->pai = no;
-
-            no->esquerda = novo;
-
-            return novo;
-
+            AVLNo* AVLnovo = malloc(sizeof(AVLNo));
+            AVLnovo->valor = valor;
+            AVLnovo->pai = AVLno;
+            AVLno->esquerda = AVLnovo;
+            return AVLnovo;
         } else {
-
-            return adicionarNo(no->esquerda, valor);
-
+            return AVLadicionarNo(AVLno->esquerda, valor);
         }
-
     }
-
 }
 
-
-
-No* adicionar(Arvore* arvore, int valor) {
-
-    contador++;
-
-    if (arvore->raiz == NULL) {
-
+AVLNo* AVLadicionar(AVLArvore* AVLarvore, int valor) {
+    AVLcontador++;
+    if (AVLarvore->raiz == NULL) {
         printf("Adicionando %d\n",valor);
-
-        No* novo = malloc(sizeof(No));
-
-        novo->valor = valor;
-
-
-
-        arvore->raiz = novo;
-
-        return novo;
-
+        AVLNo* AVLnovo = malloc(sizeof(AVLNo));
+        AVLnovo->valor = valor;
+        AVLarvore->raiz = AVLnovo;
+        return AVLnovo;
     } else {
-
-        No* no = adicionarNo(arvore->raiz, valor);
-
-        balanceamento(arvore, no);
-
-
-
-        return no;
-
+        AVLNo* AVLno = AVLadicionarNo(AVLarvore->raiz, valor);
+        AVLbalanceamento(AVLarvore, AVLno);
+        return AVLno;
     }
-
 }
 
-
-
-void remover(Arvore* arvore, No* no) {
-
-    if (no->esquerda != NULL) {
-
-        remover(arvore, no->esquerda);
-
+void AVLremover(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    if (AVLno->esquerda != NULL) {
+        AVLremover(AVLarvore, AVLno->esquerda);
     }
 
-
-
-    if (no->direita != NULL) {
-
-        remover(arvore, no->direita);
-
+    if (AVLno->direita != NULL) {
+        AVLremover(AVLarvore, AVLno->direita);
     }
 
-
-
-    if (no->pai == NULL) {
-
-        arvore->raiz = NULL;
-
+    if (AVLno->pai == NULL) {
+        AVLarvore->raiz = NULL;
     } else {
-
-        if (no->pai->esquerda == no) {
-
-            no->pai->esquerda = NULL;
-
+        if (AVLno->pai->esquerda == AVLno) {
+            AVLno->pai->esquerda = NULL;
         } else {
-
-            no->pai->direita = NULL;
-
+            AVLno->pai->direita = NULL;
         }
-
     }
-
-
-
-    free(no);
-
+    free(AVLno);
 }
 
-
-
-No* localizar(No* no, int valor) {
-
-    if (no->valor == valor) {
-
-        return no;
-
+AVLNo* AVLlocalizar(AVLNo* AVLno, int valor) {
+    if (AVLno->valor == valor) {
+        return AVLno;
     } else {
-
-        if (valor < no->valor) {
-
-            if (no->esquerda != NULL) {
-
-                return localizar(no->esquerda, valor);
-
+        if (valor < AVLno->valor) {
+            if (AVLno->esquerda != NULL) {
+                return AVLlocalizar(AVLno->esquerda, valor);
             }
-
         } else {
-
-            if (no->direita != NULL) {
-
-                return localizar(no->direita, valor);
-
+            if (AVLno->direita != NULL) {
+                return AVLlocalizar(AVLno->direita, valor);
             }
-
         }
-
     }
-
-
-
     return NULL;
-
 }
 
-
-
-void percorrerProfundidadeInOrder(No* no, void (*callback)(int)) {
-
-    if (no != NULL) {
-
-        percorrerProfundidadeInOrder(no->esquerda,callback);
-
-        callback(no->valor);
-
-        percorrerProfundidadeInOrder(no->direita,callback);
-
+void AVLpercorrerProfundidadeInOrder(AVLNo* AVLno, void (*callback)(int)) {
+    if (AVLno != NULL) {
+        AVLpercorrerProfundidadeInOrder(AVLno->esquerda,callback);
+        callback(AVLno->valor);
+        AVLpercorrerProfundidadeInOrder(AVLno->direita,callback);
     }
-
 }
 
-
-
-void percorrerProfundidadePreOrder(No* no, void (*callback)(int)) {
-
-    if (no != NULL) {
-
-        callback(no->valor);
-
-        percorrerProfundidadePreOrder(no->esquerda,callback);
-
-        percorrerProfundidadePreOrder(no->direita,callback);
-
+void AVLpercorrerProfundidadePreOrder(AVLNo* AVLno, void (*callback)(int)) {
+    if (AVLno != NULL) {
+        callback(AVLno->valor);
+        AVLpercorrerProfundidadePreOrder(AVLno->esquerda,callback);
+        AVLpercorrerProfundidadePreOrder(AVLno->direita,callback);
     }
-
 }
 
-
-
-void percorrerProfundidadePosOrder(No* no, void (callback)(int)) {
-
-    if (no != NULL) {
-
-        percorrerProfundidadePosOrder(no->esquerda,callback);
-
-        percorrerProfundidadePosOrder(no->direita,callback);
-
-        callback(no->valor);
-
+void AVLpercorrerProfundidadePosOrder(AVLNo* AVLno, void (callback)(int)) {
+    if (AVLno != NULL) {
+        AVLpercorrerProfundidadePosOrder(AVLno->esquerda,callback);
+        AVLpercorrerProfundidadePosOrder(AVLno->direita,callback);
+        callback(AVLno->valor);
     }
-
 }
 
-
-
-void visitar(int valor){
-
+void AVLvisitar(int valor){
     printf("%d ", valor);
-
 }
 
-
-
-void balanceamento(Arvore* arvore, No* no) {
-
-    while (no != NULL) {
-
-        int fator = fb(no);
-
-
+void AVLbalanceamento(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    while (AVLno != NULL) {
+        int fator = fb(AVLno);
 
         if (fator > 1) { //árvore mais pesada para esquerda
-
             //rotação para a direita
-
-            if (fb(no->esquerda) > 0) {
-
-                printf("RSD(%d)\n",no->valor);
-
-                rsd(arvore, no); //rotação simples a direita, pois o FB do filho tem sinal igual
-
+            if (fb(AVLno->esquerda) > 0) {
+                printf("RSD(%d)\n",AVLno->valor);
+                rsd(AVLarvore, AVLno); //rotação simples a direita, pois o FB do filho tem sinal igual
             } else {
-
-                printf("RDD(%d)\n",no->valor);
-
-                rdd(arvore, no); //rotação dupla a direita, pois o FB do filho tem sinal diferente
-
+                printf("RDD(%d)\n",AVLno->valor);
+                rdd(AVLarvore, AVLno); //rotação dupla a direita, pois o FB do filho tem sinal diferente
             }
 
         } else if (fator < -1) { //árvore mais pesada para a direita
-
             //rotação para a esquerda
-
-            if (fb(no->direita) < 0) {
-
-                printf("RSE(%d)\n",no->valor);
-
-                rse(arvore, no); //rotação simples a esquerda, pois o FB do filho tem sinal igual
-
+            if (fb(AVLno->direita) < 0) {
+                printf("RSE(%d)\n",AVLno->valor);
+                rse(AVLarvore, AVLno); //rotação simples a esquerda, pois o FB do filho tem sinal igual
             } else {
-
-                printf("RDE(%d)\n",no->valor);
-
-                rde(arvore, no); //rotação dupla a esquerda, pois o FB do filho tem sinal diferente
-
+                printf("RDE(%d)\n",AVLno->valor);
+                rde(AVLarvore, AVLno); //rotação dupla a esquerda, pois o FB do filho tem sinal diferente
             }
-
         }
-
-
-
-        no = no->pai;
-
+        AVLno = AVLno->pai;
     }
-
 }
 
-
-
-int altura(No* no){
-
+int AVLaltura(AVLNo* AVLno){
     int esquerda = 0,direita = 0;
 
-
-
-    if (no->esquerda != NULL) {
-
-        esquerda = altura(no->esquerda) + 1;
-
+    if (AVLno->esquerda != NULL) {
+        esquerda = AVLaltura(AVLno->esquerda) + 1;
     }
 
-
-
-    if (no->direita != NULL) {
-
-        direita = altura(no->direita) + 1;
-
+    if (AVLno->direita != NULL) {
+        direita = AVLaltura(AVLno->direita) + 1;
     }
-
-
 
     return esquerda > direita ? esquerda : direita; //max(esquerda,direita)
-
 }
 
-
-
-int fb(No* no) {
-
-    contador++;
-
+int fb(AVLNo* AVLno) {
+    AVLcontador++;
     int esquerda = 0,direita = 0;
 
-
-
-    if (no->esquerda != NULL) {
-
-        esquerda = altura(no->esquerda) + 1;
-
+    if (AVLno->esquerda != NULL) {
+        esquerda = AVLaltura(AVLno->esquerda) + 1;
     }
 
-
-
-    if (no->direita != NULL) {
-
-        direita = altura(no->direita) + 1;
-
+    if (AVLno->direita != NULL) {
+        direita = AVLaltura(AVLno->direita) + 1;
     }
-
-
 
     return esquerda - direita;
-
 }
 
-
-
-No* rse(Arvore* arvore, No* no) {
-
-    contador++;
-
-    No* pai = no->pai;
-
-    No* direita = no->direita;
-
-
-
-    no->direita = direita->esquerda;
-
-    no->pai = direita;
-
-
-
-    direita->esquerda = no;
-
+AVLNo* rse(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    AVLcontador++;
+    AVLNo* pai = AVLno->pai;
+    AVLNo* direita = AVLno->direita;
+    AVLno->direita = direita->esquerda;
+    AVLno->pai = direita;
+    direita->esquerda = AVLno;
     direita->pai = pai;
 
-
-
     if (pai == NULL) {
-
-        arvore->raiz = direita;
-
+        AVLarvore->raiz = direita;
     } else {
-
-        if (pai->esquerda == no) {
-
+        if (pai->esquerda == AVLno) {
             pai->esquerda = direita;
-
         } else {
-
             pai->direita = direita;
-
         }
-
     }
-
-
 
     return direita;
-
 }
 
+AVLNo* rsd(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    AVLcontador++;
+    AVLNo* pai = AVLno->pai;
+    AVLNo* esquerda = AVLno->esquerda;
 
+    AVLno->esquerda = esquerda->direita;
+    AVLno->pai = esquerda;
 
-No* rsd(Arvore* arvore, No* no) {
-
-    contador++;
-
-    No* pai = no->pai;
-
-    No* esquerda = no->esquerda;
-
-
-
-    no->esquerda = esquerda->direita;
-
-    no->pai = esquerda;
-
-
-
-    esquerda->direita = no;
-
+    esquerda->direita = AVLno;
     esquerda->pai = pai;
 
-
-
     if (pai == NULL) {
-
-        arvore->raiz = esquerda;
-
+        AVLarvore->raiz = esquerda;
     } else {
-
-        if (pai->esquerda == no) {
-
+        if (pai->esquerda == AVLno) {
             pai->esquerda = esquerda;
-
         } else {
-
             pai->direita = esquerda;
-
         }
-
     }
 
-
-
     return esquerda;
-
 }
 
-
-
-No* rde(Arvore* arvore, No* no) {
-
-    no->direita = rsd(arvore, no->direita);
-
-    return rse(arvore, no);
-
+AVLNo* rde(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    AVLno->direita = rsd(AVLarvore, AVLno->direita);
+    return rse(AVLarvore, AVLno);
 }
 
-
-
-No* rdd(Arvore* arvore, No* no) {
-
-    no->esquerda = rse(arvore, no->esquerda);
-
-    return rsd(arvore, no);
-
+AVLNo* rdd(AVLArvore* AVLarvore, AVLNo* AVLno) {
+    AVLno->esquerda = rse(AVLarvore, AVLno->esquerda);
+    return rsd(AVLarvore, AVLno);
 }
-
-
 
 int main() {
 
-    Arvore* a = criar();
-
-
+    AVLArvore* a = criar();
 
     for (int i = 1; i <= 7; i++) {
-
-        adicionar(a,i);
-
+        AVLadicionar(a,i);
     }
 
-
-
-
-
     printf("\n");
+    printf("Contador: %i\n", AVLcontador);
+    AVLcontador=0;
 
-    printf("Contador: %i\n", contador);
+    AVLArvore* b = criar();
 
-    contador=0;
+    AVLadicionar(b,4);
+    AVLadicionar(b,2);
+    AVLadicionar(b,6);
+    AVLadicionar(b,1);
+    AVLadicionar(b,3);
+    AVLadicionar(b,7);
 
-
-
-    Arvore* b = criar();
-
-
-
-    adicionar(b,4);
-
-    adicionar(b,2);
-
-    adicionar(b,6);
-
-    adicionar(b,1);
-
-    adicionar(b,3);
-
-    adicionar(b,7);
-
-
-
-    printf("Contador: %i\n", contador);
-
+    printf("Contador: %i\n", AVLcontador);
     printf("\n");
-
-    contador=0;
-
-
+    AVLcontador=0;
 
 }

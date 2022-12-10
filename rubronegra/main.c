@@ -8,131 +8,131 @@ typedef enum coloracao Cor;
 
   
 
-typedef struct no { 
-    struct no* pai; 
-    struct no* esquerda; 
-    struct no* direita; 
+typedef struct RNno { 
+    struct RNno* pai; 
+    struct RNno* esquerda; 
+    struct RNno* direita; 
     Cor cor; 
     int valor; 
-} No; 
+} RNNo; 
 
-typedef struct arvore { 
-    struct no* raiz; 
-    struct no* nulo;  
-} Arvore; 
+typedef struct RNarvore { 
+    struct RNno* raiz; 
+    struct RNno* nulo;  
+} RNArvore; 
 
   
 
-int contador = 0; 
-No* criarNo(Arvore*, No*, int); 
-void balancear(Arvore*, No*); 
-void rotacionarEsquerda(Arvore*, No*); 
-void rotacionarDireita(Arvore*, No*); 
+int RNcontador = 0; 
+RNNo* criarRNNo(RNArvore*, RNNo*, int); 
+void RNbalancear(RNArvore*, RNNo*); 
+void rotacionarEsquerda(RNArvore*, RNNo*); 
+void rotacionarDireita(RNArvore*, RNNo*); 
 
-Arvore* criar(); 
-int vazia(Arvore*); 
-No* adicionar(Arvore*, int); 
-No* localizar(Arvore* arvore, int valor); 
+RNArvore* RNcriar(); 
+int RNvazia(RNArvore*); 
+RNNo* RNadicionar(RNArvore*, int); 
+RNNo* RNlocalizar(RNArvore* RNarvore, int valor); 
 
-Arvore* criar() { 
-    Arvore *arvore = malloc(sizeof(Arvore)); 
-    arvore->nulo = NULL; 
-    arvore->raiz = NULL;
+RNArvore* RNcriar() { 
+    RNArvore *RNarvore = malloc(sizeof(RNArvore)); 
+    RNarvore->nulo = NULL; 
+    RNarvore->raiz = NULL;
 
-    arvore->nulo = criarNo(arvore, NULL, 0); 
-    arvore->nulo->cor = Preto; 
+    RNarvore->nulo = criarRNNo(RNarvore, NULL, 0); 
+    RNarvore->nulo->cor = Preto; 
 
-    return arvore; 
+    return RNarvore; 
 } 
 
-int vazia(Arvore* arvore) { 
-    return arvore->raiz == NULL; 
+int RNvazia(RNArvore* RNarvore) { 
+    return RNarvore->raiz == NULL; 
 } 
 
-No* criarNo(Arvore* arvore, No* pai, int valor) { 
-    No* no = malloc(sizeof(No)); 
+RNNo* criarRNNo(RNArvore* RNarvore, RNNo* pai, int valor) { 
+    RNNo* RNno = malloc(sizeof(RNNo)); 
 
-    no->pai = pai;     
-    no->valor = valor; 
-    no->direita = arvore->nulo; 
-    no->esquerda = arvore->nulo; 
-    return no; 
+    RNno->pai = pai;     
+    RNno->valor = valor; 
+    RNno->direita = RNarvore->nulo; 
+    RNno->esquerda = RNarvore->nulo; 
+    return RNno; 
 } 
 
-No* adicionarNo(Arvore* arvore, No* no, int valor) { 
-    contador++; 
-    if (valor > no->valor) { 
-        if (no->direita == arvore->nulo) { 
-            no->direita = criarNo(arvore, no, valor);      
-            no->direita->cor = Vermelho;        
-            return no->direita; 
+RNNo* adicionarRNNo(RNArvore* RNarvore, RNNo* RNno, int valor) { 
+    RNcontador++; 
+    if (valor > RNno->valor) { 
+        if (RNno->direita == RNarvore->nulo) { 
+            RNno->direita = criarRNNo(RNarvore, RNno, valor);      
+            RNno->direita->cor = Vermelho;        
+            return RNno->direita; 
 
         } else { 
-            return adicionarNo(arvore, no->direita, valor); 
+            return adicionarRNNo(RNarvore, RNno->direita, valor); 
         } 
 
     } else { 
-        if (no->esquerda == arvore->nulo) { 
-            no->esquerda = criarNo(arvore, no, valor); 
-            no->esquerda->cor = Vermelho; 
-            return no->esquerda; 
+        if (RNno->esquerda == RNarvore->nulo) { 
+            RNno->esquerda = criarRNNo(RNarvore, RNno, valor); 
+            RNno->esquerda->cor = Vermelho; 
+            return RNno->esquerda; 
 
         } else { 
-            return adicionarNo(arvore, no->esquerda, valor); 
+            return adicionarRNNo(RNarvore, RNno->esquerda, valor); 
         } 
     } 
 } 
   
-No* adicionar(Arvore* arvore, int valor) { 
-    contador++; 
-    if (vazia(arvore)) { 
-        arvore->raiz = criarNo(arvore, arvore->nulo, valor); 
-        arvore->raiz->cor = Preto; 
+RNNo* RNadicionar(RNArvore* RNarvore, int valor) { 
+    RNcontador++; 
+    if (RNvazia(RNarvore)) { 
+        RNarvore->raiz = criarRNNo(RNarvore, RNarvore->nulo, valor); 
+        RNarvore->raiz->cor = Preto; 
          
-        return arvore->raiz; 
+        return RNarvore->raiz; 
     } else { 
-        No* no = adicionarNo(arvore, arvore->raiz, valor); 
-        balancear(arvore, no); 
+        RNNo* RNno = adicionarRNNo(RNarvore, RNarvore->raiz, valor); 
+        RNbalancear(RNarvore, RNno); 
 
-        return no; 
+        return RNno; 
     } 
 } 
 
-No* localizar(Arvore* arvore, int valor) { 
-    if (!vazia(arvore)) { 
-        No* no = arvore->raiz; 
-        while (no != arvore->nulo) { 
-            if (no->valor == valor) { 
-                return no; 
+RNNo* RNlocalizar(RNArvore* RNarvore, int valor) { 
+    if (!RNvazia(RNarvore)) { 
+        RNNo* RNno = RNarvore->raiz; 
+        while (RNno != RNarvore->nulo) { 
+            if (RNno->valor == valor) { 
+                return RNno; 
             } else { 
-                no = valor < no->valor ? no->esquerda : no->direita; 
+                RNno = valor < RNno->valor ? RNno->esquerda : RNno->direita; 
             } 
         } 
     } 
     return NULL; 
 } 
   
-void percorrerProfundidadeInOrder(Arvore* arvore, No* no, void (*callback)(int)) { 
-    if (no != arvore->nulo) { 
-        percorrerProfundidadeInOrder(arvore, no->esquerda,callback); 
-        callback(no->valor); 
-        percorrerProfundidadeInOrder(arvore, no->direita,callback); 
+void RNpercorrerProfundidadeIRNnOrder(RNArvore* RNarvore, RNNo* RNno, void (*callback)(int)) { 
+    if (RNno != RNarvore->nulo) { 
+        RNpercorrerProfundidadeIRNnOrder(RNarvore, RNno->esquerda,callback); 
+        callback(RNno->valor); 
+        RNpercorrerProfundidadeIRNnOrder(RNarvore, RNno->direita,callback); 
     } 
 } 
 
-void percorrerProfundidadePreOrder(Arvore* arvore, No* no, void (*callback)(int)) { 
-    if (no != arvore->nulo) { 
-        callback(no->valor); 
-        percorrerProfundidadePreOrder(arvore, no->esquerda,callback); 
-        percorrerProfundidadePreOrder(arvore, no->direita,callback); 
+void RNpercorrerProfundidadePreOrder(RNArvore* RNarvore, RNNo* RNno, void (*callback)(int)) { 
+    if (RNno != RNarvore->nulo) { 
+        callback(RNno->valor); 
+        RNpercorrerProfundidadePreOrder(RNarvore, RNno->esquerda,callback); 
+        RNpercorrerProfundidadePreOrder(RNarvore, RNno->direita,callback); 
     } 
 } 
 
-void percorrerProfundidadePosOrder(Arvore* arvore, No* no, void (callback)(int)) { 
-    if (no != arvore->nulo) { 
-        percorrerProfundidadePosOrder(arvore, no->esquerda,callback); 
-        percorrerProfundidadePosOrder(arvore, no->direita,callback); 
-        callback(no->valor); 
+void RNpercorrerProfundidadePosOrder(RNArvore* RNarvore, RNNo* RNno, void (callback)(int)) { 
+    if (RNno != RNarvore->nulo) { 
+        RNpercorrerProfundidadePosOrder(RNarvore, RNno->esquerda,callback); 
+        RNpercorrerProfundidadePosOrder(RNarvore, RNno->direita,callback); 
+        callback(RNno->valor); 
     } 
 } 
 
@@ -140,150 +140,192 @@ void visitar(int valor){
     printf("%d ", valor); 
 } 
 
-void balancear(Arvore* arvore, No* no) { 
-    while (no->pai->cor == Vermelho) { 
-        contador++; 
-        if (no->pai == no->pai->pai->esquerda) { 
-            No *tio = no->pai->pai->direita; 
+void RNbalancear(RNArvore* RNarvore, RNNo* RNno) { 
+    while (RNno->pai->cor == Vermelho) { 
+        RNcontador++; 
+        if (RNno->pai == RNno->pai->pai->esquerda) { 
+            RNNo *tio = RNno->pai->pai->direita; 
 
             if (tio->cor == Vermelho) { 
-                contador++; 
+                RNcontador++; 
                 tio->cor = Preto; //Caso 1 
-                no->pai->cor = Preto;  
-                no->pai->pai->cor = Vermelho; //Caso 1 
-                no = no->pai->pai; //Caso 1 
+                RNno->pai->cor = Preto;  
+                RNno->pai->pai->cor = Vermelho; //Caso 1 
+                RNno = RNno->pai->pai; //Caso 1 
 
             } else { 
-                if (no == no->pai->direita) { 
-                    contador++; 
-                    no = no->pai; //Caso 2 
-                    rotacionarEsquerda(arvore, no); //Caso 2 
+                if (RNno == RNno->pai->direita) { 
+                    RNcontador++; 
+                    RNno = RNno->pai; //Caso 2 
+                    rotacionarEsquerda(RNarvore, RNno); //Caso 2 
                 } else { 
-                    contador++; 
-                    no->pai->cor = Preto;  
-                    no->pai->pai->cor = Vermelho; //Caso 3 
-                    rotacionarDireita(arvore, no->pai->pai); //Caso 3 
+                    RNcontador++; 
+                    RNno->pai->cor = Preto;  
+                    RNno->pai->pai->cor = Vermelho; //Caso 3 
+                    rotacionarDireita(RNarvore, RNno->pai->pai); //Caso 3 
                 } 
             } 
         } else { 
-            No *tio = no->pai->pai->esquerda; 
+            RNNo *tio = RNno->pai->pai->esquerda; 
             if (tio->cor == Vermelho) { 
-                contador++; 
+                RNcontador++; 
                 tio->cor = Preto; //Caso 1 
-                no->pai->cor = Preto;  
-                no->pai->pai->cor = Vermelho; //Caso 1 
-                no = no->pai->pai; //Caso 1 
+                RNno->pai->cor = Preto;  
+                RNno->pai->pai->cor = Vermelho; //Caso 1 
+                RNno = RNno->pai->pai; //Caso 1 
             } else { 
-                if (no == no->pai->esquerda) { 
-                    contador++; 
-                    no = no->pai; //Caso 2 
-                    rotacionarDireita(arvore, no); //Caso 2 
+                if (RNno == RNno->pai->esquerda) { 
+                    RNcontador++; 
+                    RNno = RNno->pai; //Caso 2 
+                    rotacionarDireita(RNarvore, RNno); //Caso 2 
                 } else { 
-                    contador++; 
-                    no->pai->cor = Preto;  
-                    no->pai->pai->cor = Vermelho; //Caso 3 
-                    rotacionarEsquerda(arvore, no->pai->pai); //Caso 3 
+                    RNcontador++; 
+                    RNno->pai->cor = Preto;  
+                    RNno->pai->pai->cor = Vermelho; //Caso 3 
+                    rotacionarEsquerda(RNarvore, RNno->pai->pai); //Caso 3 
                 } 
             } 
         } 
     } 
-    arvore->raiz->cor = Preto; //Conserta possível quebra regra 2 
+    RNarvore->raiz->cor = Preto; //Conserta possível quebra regra 2 
 } 
 
-void rotacionarEsquerda(Arvore* arvore, No* no) { 
-    contador++; 
-    No* direita = no->direita; 
-    no->direita = direita->esquerda;  
-    if (direita->esquerda != arvore->nulo) { 
-        direita->esquerda->pai = no; 
+void rotacionarEsquerda(RNArvore* RNarvore, RNNo* RNno) { 
+    RNcontador++; 
+    RNNo* direita = RNno->direita; 
+    RNno->direita = direita->esquerda;  
+    if (direita->esquerda != RNarvore->nulo) { 
+        direita->esquerda->pai = RNno; 
     }
-    direita->pai = no->pai; 
-    if (no->pai == arvore->nulo) { 
-        arvore->raiz = direita; 
-    } else if (no == no->pai->esquerda) { 
-        no->pai->esquerda = direita; 
+    direita->pai = RNno->pai; 
+    if (RNno->pai == RNarvore->nulo) { 
+        RNarvore->raiz = direita; 
+    } else if (RNno == RNno->pai->esquerda) { 
+        RNno->pai->esquerda = direita; 
     } else { 
-        no->pai->direita = direita; 
+        RNno->pai->direita = direita; 
     } 
-    direita->esquerda = no; 
-    no->pai = direita; 
+    direita->esquerda = RNno; 
+    RNno->pai = direita; 
 } 
 
-void rotacionarDireita(Arvore* arvore, No* no) { 
-    contador++; 
-    No* esquerda = no->esquerda; 
-    no->esquerda = esquerda->direita; 
-    if (esquerda->direita != arvore->nulo) { 
-        esquerda->direita->pai = no; 
+void rotacionarDireita(RNArvore* RNarvore, RNNo* RNno) { 
+    RNcontador++; 
+    RNNo* esquerda = RNno->esquerda; 
+    RNno->esquerda = esquerda->direita; 
+    if (esquerda->direita != RNarvore->nulo) { 
+        esquerda->direita->pai = RNno; 
     } 
-    esquerda->pai = no->pai; 
+    esquerda->pai = RNno->pai; 
 
-    if (no->pai == arvore->nulo) { 
-        arvore->raiz = esquerda; 
-    } else if (no == no->pai->esquerda) { 
-        no->pai->esquerda = esquerda; 
+    if (RNno->pai == RNarvore->nulo) { 
+        RNarvore->raiz = esquerda; 
+    } else if (RNno == RNno->pai->esquerda) { 
+        RNno->pai->esquerda = esquerda; 
     } else { 
-        no->pai->direita = esquerda; 
+        RNno->pai->direita = esquerda; 
     } 
-    esquerda->direita = no; 
-    no->pai = esquerda; 
+    esquerda->direita = RNno; 
+    RNno->pai = esquerda; 
 } 
 
-
-int main() {
-
-    //Criar um vetor com mil numeros aleatorios que não se repetem
-    int v[1000], numero;
-    srand ( time(NULL) );
-    for (int i = 0; i < 1000; i++){
-        numero = rand() % 1000;
-        for (int j = 0; j < i+1; j++){
-            if (numero == v[j]){
-                numero = -1;
+void popula(int vetor[], int tamanho){
+    int numero;
+    for (int i = 0; i <= tamanho; i++){ 
+        numero = rand() % 5000; 
+        for (int j = 0; j < i+1; j++){ 
+            if (numero == vetor[j]){ 
+                numero=-1;
+                printf("Preso\n");
             }
         }
-        if (numero != -1){
-            v[i]= numero;
-        } else{
+        if (numero==-1){
             i--;
+        }else{
+            vetor[i]=numero;
         }
     }
-    //Vetor v criado com mil numeros
-    
-    FILE *arquivo;
-
-    arquivo = fopen("teste.csv", "w");
-
-    if (arquivo==NULL){
-        printf("Erro ao abrir arquivo\n");
-    }
-
-    fprintf(arquivo, "%s", "RN Caso Médio;RN Pior Caso;\n");
-    
-    for (int j = 1; j < 100; j++){
-        printf("%i\n", j);
-        //Arvore a com caso medio
-        Arvore* a = criar(); 
-        for (int i = 0; i < j; i++){
-            adicionar(a, v[i]);
-        }
-
-        fprintf(arquivo, "%i", contador);
-        fprintf(arquivo, "%s", ";");
-        contador=0;
-        free(a);
-
-        //Arvore b com pior caso
-        Arvore* b = criar(); 
-        for (int i = 0; i < j; i++){
-            adicionar(b, i);
-        }
-
-        fprintf(arquivo, "%i", contador);
-        fprintf(arquivo, "%s", ";\n");
-        contador=0; 
-        free(b);
-
-    }
-    fclose (arquivo);
 }
+
+int main() { 
+
+    int v[1000]; 
+    srand ( time(NULL) );  
+
+    FILE *arquivomedio; 
+    FILE *arquivopior; 
+
+    arquivomedio = fopen("casomedio.csv", "w"); 
+    if (arquivomedio==NULL){ 
+        printf("Erro ao abrir arquivo Caso Medio\n"); 
+    }
+
+    arquivopior = fopen("piorcaso.csv", "w"); 
+    if (arquivopior==NULL){ 
+        printf("Erro ao abrir arquivo PiorCaso\n"); 
+    } 
+
+  
+    fprintf(arquivomedio, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
+    fprintf(arquivopior, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
+
+     
+    //Criação Loop 1000 registros
+    for (int j = 1; j < 1000; j++){ 
+        long int media_rn=0, media_avl=0, media_b1=0, media_b5=0, media_b10=0; 
+        printf("Execucao: %d\n", j);
+        //Arvore a com Caso Medio 
+        for (int numero = 0; numero < 10; numero++) { 
+            int v[j]; 
+            popula(v,j);
+            
+            RNArvore* a = RNcriar(); 
+            //AVLArvore* b = AVLcriar(); 
+
+            for (int i = 0; i < j; i++){ 
+                RNcontador=0;
+                printf("%d: %d\n",i, v[i]);
+                RNadicionar(a, v[i]);
+                media_rn+=RNcontador; 
+  
+                //AVLcontador=0; 
+                //adicinarAVL=(b, v[i]); 
+                //media_avl+=AVLcontador; 
+
+            } 
+            free(a);
+            free(v);
+        } 
+
+        fprintf(arquivomedio, "%d;%d", j, media_rn/10); 
+        //fprintf(arquivomedio, "%d;%d", j, media_avl/10);
+        fprintf(arquivomedio, "\n"); 
+
+
+        //Arvore com Pior Caso
+        /*
+        for (size_t i = 0; i < count; i++){ 
+            
+        } 
+
+        fprintf(arquivopior, "\n"); 
+
+        //contador=0; 
+
+        //Arvore b com pior caso 
+        RNArvore* b = criar();  
+        for (int i = 0; i < j; i++){ 
+            adicionar(b, i); 
+        } 
+
+        fprintf(arquivo, "%i", contador); 
+        fprintf(arquivo, "%s", ";\n"); 
+        contador=0;  
+        free(b);
+        */
+
+
+    } 
+    fclose (arquivomedio);
+    fclose (arquivopior);
+} 
