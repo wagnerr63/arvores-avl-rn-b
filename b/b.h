@@ -12,17 +12,17 @@ typedef struct arvoreB {
 } ArvoreB;
 
 
-ArvoreB* criaArvore(int);
-No* criaNo(ArvoreB*);
-void percorreArvore(No*);
-int pesquisaBinaria(No*, int);
-int localizaChave(ArvoreB*, int);
-No* localizaNo(ArvoreB*, int);
-void adicionaChaveNo(No*, No*, int);
-int transbordo(ArvoreB*,No*);
-No* divideNo(ArvoreB*, No*);
-void adicionaChaveRecursivo(ArvoreB*, No*, No*, int);
-void adicionaChave(ArvoreB*, int);
+ArvoreB* criaArvoreB(int);
+No* bCriaNo(ArvoreB*);
+void bPercorreArvore(No*);
+int bPesquisaBinaria(No*, int);
+int bLocalizaChave(ArvoreB*, int);
+No* bLocalizaNo(ArvoreB*, int);
+void bAdicionaChaveNo(No*, No*, int);
+int bTransbordo(ArvoreB*,No*);
+No* bDivideNo(ArvoreB*, No*);
+void bAdicionaChaveRecursivo(ArvoreB*, No*, No*, int);
+void bAdicionaChave(ArvoreB*, int);
 
-int fillWithRandomNumbers(ArvoreB* arvore, int quantity);
-int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity);
+int bFillWithRandomNumbers(ArvoreB* arvore, int quantity);
+int bFillWithRandomNumbersASC(ArvoreB* arvore, int quantity);

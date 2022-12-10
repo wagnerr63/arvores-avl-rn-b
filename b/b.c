@@ -3,17 +3,17 @@
 #include <time.h>
 #include "b.h"
 
-ArvoreB* criaArvore(int ordem) {
+ArvoreB* criaArvoreB(int ordem) {
     ArvoreB* a = malloc(sizeof(ArvoreB));
     a->ordem = ordem;
-    a->raiz = criaNo(a);
+    a->raiz = bCriaNo(a);
 
     return a;
 }
 
 int contador = 0;
 
-No* criaNo(ArvoreB* arvore) {
+No* bCriaNo(ArvoreB* arvore) {
     int max = arvore->ordem * 2;
     No* no = malloc(sizeof(No));
 
@@ -29,19 +29,19 @@ No* criaNo(ArvoreB* arvore) {
     return no;
 }
 
-void percorreArvore(No* no) {
+void bPercorreArvore(No* no) {
     if (no != NULL) {
         for (int i = 0; i < no->total; i++){
-            percorreArvore(no->filhos[i]); //visita o filho a esquerda
+            bPercorreArvore(no->filhos[i]); //visita o filho a esquerda
             
             printf("%d ",no->chaves[i]);
         }
 
-        percorreArvore(no->filhos[no->total]); //visita ultimo filho (direita)
+        bPercorreArvore(no->filhos[no->total]); //visita ultimo filho (direita)
     }
 }
 
-int pesquisaBinaria(No* no, int chave) {
+int bPesquisaBinaria(No* no, int chave) {
     int inicio = 0, fim = no->total - 1, meio;
     
     while (inicio <= fim) {	
@@ -60,11 +60,11 @@ int pesquisaBinaria(No* no, int chave) {
     return inicio; //não encontrou	
 }
 
-int localizaChave(ArvoreB* arvore, int chave) {	
+int bLocalizaChave(ArvoreB* arvore, int chave) {	
     No *no = arvore->raiz;
     
     while (no != NULL) {
-        int i = pesquisaBinaria(no, chave);
+        int i = bPesquisaBinaria(no, chave);
 
         if (i < no->total && no->chaves[i] == chave) {
             return 1; //encontrou
@@ -76,13 +76,13 @@ int localizaChave(ArvoreB* arvore, int chave) {
     return 0; //não encontrou	
 }
 
-No* localizaNo(ArvoreB* arvore, int chave) {	
+No* bLocalizaNo(ArvoreB* arvore, int chave) {	
     No *no = arvore->raiz;
     
     while (no != NULL) {
         contador++;
 
-        int i = pesquisaBinaria(no, chave);
+        int i = bPesquisaBinaria(no, chave);
 
         if (no->filhos[i] == NULL)
             return no; //encontrou nó
@@ -93,8 +93,8 @@ No* localizaNo(ArvoreB* arvore, int chave) {
     return NULL; //não encontrou nenhum nó
 }
 
-void adicionaChaveNo(No* no, No* novo, int chave) {
-    int i = pesquisaBinaria(no, chave);
+void bbAdicionaChaveNo(No* no, No* novo, int chave) {
+    int i = bPesquisaBinaria(no, chave);
     
     contador++;
 
@@ -109,15 +109,15 @@ void adicionaChaveNo(No* no, No* novo, int chave) {
     no->total++;
 }
 
-int transbordo(ArvoreB* arvore, No* no) {
+int bTransbordo(ArvoreB* arvore, No* no) {
     contador++;
     
     return no->total > arvore->ordem * 2;
 }
 
-No* divideNo(ArvoreB* arvore, No* no) {
+No* bDivideNo(ArvoreB* arvore, No* no) {
     int meio = no->total / 2;
-    No* novo = criaNo(arvore);
+    No* novo = bCriaNo(arvore);
     novo->pai = no->pai;
 
     contador++;
@@ -136,34 +136,34 @@ No* divideNo(ArvoreB* arvore, No* no) {
     return novo;
 }
 
-void adicionaChaveRecursivo(ArvoreB* arvore, No* no, No* novo, int chave) {
+void bAdicionaChaveRecursivo(ArvoreB* arvore, No* no, No* novo, int chave) {
     contador++;
     
-    adicionaChaveNo(no, novo, chave);
+    bbAdicionaChaveNo(no, novo, chave);
     
-    if (transbordo(arvore, no)) {
+    if (bTransbordo(arvore, no)) {
         int promovido = no->chaves[arvore->ordem]; 
-        No* novo = divideNo(arvore, no);
+        No* novo = bDivideNo(arvore, no);
 
         if (no->pai == NULL) {
             contador++;
             
-            No* pai = criaNo(arvore);            
+            No* pai = bCriaNo(arvore);            
             pai->filhos[0] = no;
-            adicionaChaveNo(pai, novo, promovido);
+            bbAdicionaChaveNo(pai, novo, promovido);
             
             no->pai = pai;
             novo->pai = pai;
             arvore->raiz = pai;
         } else
-            adicionaChaveRecursivo(arvore, no->pai, novo, promovido);
+            bAdicionaChaveRecursivo(arvore, no->pai, novo, promovido);
     }
 }
 
-void adicionaChave(ArvoreB* arvore, int chave) {
-    No* no = localizaNo(arvore, chave);
+void bAdicionaChave(ArvoreB* arvore, int chave) {
+    No* no = bLocalizaNo(arvore, chave);
 
-    adicionaChaveRecursivo(arvore, no, NULL, chave);
+    bAdicionaChaveRecursivo(arvore, no, NULL, chave);
 }
 
 int random_number(int range){
@@ -182,7 +182,7 @@ int findValueInArray(int array[], int size, int value) {
     return 0; // not found
 }
 
-int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
+int bFillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     int i = 0;
     int numbers[1024];
     for (int i=0; i<1024; i++) {
@@ -195,7 +195,7 @@ int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
         
         if(findValueInArray(numbers, 1024, randNumber)==0) {
             numbers[i] = randNumber;
-            adicionaChave(arvore, randNumber);
+            bAdicionaChave(arvore, randNumber);
             i++;
         }
     }
@@ -203,9 +203,9 @@ int fillWithRandomNumbers(ArvoreB* arvore, int quantity) {
     return 0;
 }
 
-int fillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
+int bFillWithRandomNumbersASC(ArvoreB* arvore, int quantity) {
     for(int i=0; i<quantity; i++) {
-        adicionaChave(arvore, i);
+        bAdicionaChave(arvore, i);
     }
     return 0;
 }
@@ -220,8 +220,8 @@ int main() {
     int tamanho = 2;
     
     for (int i =0;i<10;i++) {
-        ArvoreB* arvore = criaArvore(1);
-        fillWithRandomNumbers(arvore, tamanho);
+        ArvoreB* arvore = criaArvoreB(1);
+        bFillWithRandomNumbers(arvore, tamanho);
 
         printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
         fprintf(arquivo, "%i,%i;\n", tamanho,contador);
@@ -238,8 +238,8 @@ int main() {
     arquivo = fopen("bPiorCaso.csv", "w");
     fprintf(arquivo, "%s", "tamanho,esforco;\n");
     for (int j =0;j<10;j++) {
-        ArvoreB* arvorePior = criaArvore(1);
-        fillWithRandomNumbersASC(arvorePior, tamanho);
+        ArvoreB* arvorePior = criaArvoreB(1);
+        bFillWithRandomNumbersASC(arvorePior, tamanho);
 
         printf("\nNúmero de operações no PIOR CASO: %d\n", contador);
         

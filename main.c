@@ -12,8 +12,8 @@ int main() {
     int tamanho = 2;
     
     for (int i =0;i<10;i++) {
-        ArvoreB* arvore = criaArvore(1);
-        fillWithRandomNumbers(arvore, tamanho);
+        ArvoreB* arvore = criaArvoreB(1);
+        bFillWithRandomNumbers(arvore, tamanho);
 
         printf("\nNúmero de operações no MÉDIO CASO: %d\n", contador);
         fprintf(arquivo, "%i,%i;\n", tamanho,contador);
@@ -30,8 +30,8 @@ int main() {
     arquivo = fopen("bPiorCaso.csv", "w");
     fprintf(arquivo, "%s", "tamanho,esforco;\n");
     for (int j =0;j<10;j++) {
-        ArvoreB* arvorePior = criaArvore(1);
-        fillWithRandomNumbersASC(arvorePior, tamanho);
+        ArvoreB* arvorePior = criaArvoreB(1);
+        bFillWithRandomNumbersASC(arvorePior, tamanho);
 
         printf("\nNúmero de operações no PIOR CASO: %d\n", contador);
         
