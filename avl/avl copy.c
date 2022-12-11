@@ -23,11 +23,7 @@ AVLNo* AVLadicionarNo(AVLNo* AVLno, int valor) {
             AVLNo* AVLnovo = malloc(sizeof(AVLNo));
             AVLnovo->valor = valor;
             AVLnovo->pai = AVLno;
-
             AVLno->direita = AVLnovo;
-
-            AVLnovo->direita = NULL;
-            AVLnovo->esquerda = NULL;
 
             return AVLnovo;
         } else {
@@ -40,9 +36,6 @@ AVLNo* AVLadicionarNo(AVLNo* AVLno, int valor) {
             AVLnovo->valor = valor;
             AVLnovo->pai = AVLno;
             AVLno->esquerda = AVLnovo;
-            AVLnovo->direita = NULL;
-            AVLnovo->esquerda = NULL;
-
             return AVLnovo;
         } else {
             return AVLadicionarNo(AVLno->esquerda, valor);
@@ -55,11 +48,8 @@ AVLNo* AVLadicionar(AVLArvore* AVLarvore, int valor) {
     if (AVLarvore->raiz == NULL) {
         printf("Adicionando %d\n",valor);
         AVLNo* AVLnovo = malloc(sizeof(AVLNo));
+        printf("aq 1");
         AVLnovo->valor = valor;
-        AVLnovo->direita = NULL;
-        AVLnovo->pai = NULL;
-        AVLnovo->esquerda = NULL;
-
         AVLarvore->raiz = AVLnovo;
         return AVLnovo;
     } else {
@@ -197,11 +187,8 @@ AVLNo* rse(AVLArvore* AVLarvore, AVLNo* AVLno) {
     AVLcontador++;
     AVLNo* pai = AVLno->pai;
     AVLNo* direita = AVLno->direita;
-
-    if (direita->esquerda != NULL){
-        direita->esquerda->pai = AVLno;
-    }
-
+    AVLno->direita = direita->esquerda;
+    AVLno->pai = direita;
     direita->esquerda = AVLno;
     direita->pai = pai;
 
@@ -223,9 +210,8 @@ AVLNo* rsd(AVLArvore* AVLarvore, AVLNo* AVLno) {
     AVLNo* pai = AVLno->pai;
     AVLNo* esquerda = AVLno->esquerda;
 
-    if(esquerda->direita != NULL){
-        esquerda->direita->pai = AVLno;
-    }
+    AVLno->esquerda = esquerda->direita;
+    AVLno->pai = esquerda;
 
     esquerda->direita = AVLno;
     esquerda->pai = pai;
