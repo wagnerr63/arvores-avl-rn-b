@@ -149,5 +149,6 @@ int main() {
     } 
     fclose (arquivomedio);
     fclose (arquivopior);
+    printf("FIM");
   
 }
