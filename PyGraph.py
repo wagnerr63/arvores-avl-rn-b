@@ -4,8 +4,7 @@ from matplotlib import pyplot as plt
 plt.rcParams["figure.figsize"] = [7.00, 3.50]
 plt.rcParams["figure.autolayout"] = True
 
-columns = ['RN', 'B-1', 'B-5', 'B-10']
-#columns = ['RN', 'AVL', 'B-1', 'B-5', 'B-10']
+columns = ['RN', 'AVL', 'B-1', 'B-5', 'B-10']
 
 df = pd.read_csv("D:\Programas\Git\\arvores-avl-rn-b\casomedio.csv", usecols=columns, sep=";")
 
