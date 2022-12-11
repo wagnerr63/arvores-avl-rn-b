@@ -69,7 +69,7 @@ int main() {
     }
     */
 
-    extern int RNcontador;
+    extern long int RNcontador;
     extern int bContador;
 
     int v[1000]; 
@@ -137,36 +137,47 @@ int main() {
             //free(v);
         } 
 
-        fprintf(arquivomedio, "%d;%ld", j, media_rn/10); 
-        fprintf(arquivomedio, "%d;%ld", j, media_b1/10); 
-        fprintf(arquivomedio, "%d;%ld", j, media_b5/10); 
-        fprintf(arquivomedio, "%d;%ld", j, media_b10/10); 
-        //fprintf(arquivomedio, "%d;%ld", j, media_avl/10);
+        fprintf(arquivomedio, "%d;%ld;", j, media_rn/10); 
+        //fprintf(arquivomedio, "%ld", j, media_avl/10);
+        fprintf(arquivomedio, "%ld;", media_b1/10); 
+        fprintf(arquivomedio, "%ld;", media_b5/10); 
+        fprintf(arquivomedio, "%ld", media_b10/10); 
         fprintf(arquivomedio, "\n"); 
 
 
         //Arvore com Pior Caso
-        /*
-        for (size_t i = 0; i < count; i++){ 
-            
-        } 
+        RNArvore* rnPior = RNcriar(); 
+        ArvoreB* arvoreBPior = criaArvoreB(1);
+        ArvoreB* arvoreBOrdem5Pior = criaArvoreB(5);
+        ArvoreB* arvoreBOrdem10Pior = criaArvoreB(10);
+        int bContador1 = 0, bContador5 = 0, bContador10 = 0;
+        for (int i = 1; i <= j; i++){ 
 
+            RNcontador=0;
+            bContador=0;
+            //printf("%d: %d\n",i, v[i]);
+            RNadicionar(rnPior, i);
+
+            bAdicionaChave(arvoreBPior, i);
+            bContador1+=bContador;
+            bContador=0;
+            bAdicionaChave(arvoreBOrdem5Pior, i);
+            bContador5+=bContador;
+            bContador=0;
+            bAdicionaChave(arvoreBOrdem10Pior, i);
+            bContador10+=bContador;
+        }
+        free(rnPior);
+        free(arvoreBPior);
+        free(arvoreBOrdem5Pior);
+        free(arvoreBOrdem10Pior); 
+
+        fprintf(arquivopior, "%d;%ld;", j, RNcontador); 
+        //fprintf(arquivopior, "%d", j, media_avl/10);
+        fprintf(arquivopior, "%d;", bContador1); 
+        fprintf(arquivopior, "%d;", bContador5); 
+        fprintf(arquivopior, "%d", bContador10); 
         fprintf(arquivopior, "\n"); 
-
-        //contador=0; 
-
-        //Arvore b com pior caso 
-        RNArvore* b = criar();  
-        for (int i = 0; i < j; i++){ 
-            adicionar(b, i); 
-        } 
-
-        fprintf(arquivo, "%i", contador); 
-        fprintf(arquivo, "%s", ";\n"); 
-        contador=0;  
-        free(b);
-        */
-
 
     } 
     fclose (arquivomedio);

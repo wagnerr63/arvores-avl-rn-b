@@ -3,7 +3,7 @@
 #include <time.h>
 #include "rubronegra.h"
 
-int RNcontador = 0; 
+long int RNcontador = 0; 
 
 RNArvore* RNcriar() { 
     RNArvore *RNarvore = malloc(sizeof(RNArvore)); 
