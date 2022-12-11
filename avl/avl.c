@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "avl.h"
 
-int AVLcontador = 0;
+long int AVLcontador = 0;
 
 AVLArvore* AVLcriar() {
     AVLArvore *AVLarvore = malloc(sizeof(AVLArvore));
@@ -67,7 +67,6 @@ AVLNo* AVLadicionar(AVLArvore* AVLarvore, int valor) {
         AVLbalanceamento(AVLarvore, AVLno);
         return AVLno;
     }
-      printf("aq 2");
 }
 
 void AVLremover(AVLArvore* AVLarvore, AVLNo* AVLno) {
@@ -202,6 +201,9 @@ AVLNo* rse(AVLArvore* AVLarvore, AVLNo* AVLno) {
         direita->esquerda->pai = AVLno;
     }
 
+    AVLno->direita = direita->esquerda;
+    AVLno->pai = direita;
+
     direita->esquerda = AVLno;
     direita->pai = pai;
 
@@ -226,6 +228,9 @@ AVLNo* rsd(AVLArvore* AVLarvore, AVLNo* AVLno) {
     if(esquerda->direita != NULL){
         esquerda->direita->pai = AVLno;
     }
+
+    AVLno->esquerda = esquerda->direita;
+    AVLno->pai = esquerda;
 
     esquerda->direita = AVLno;
     esquerda->pai = pai;
@@ -253,7 +258,7 @@ AVLNo* rdd(AVLArvore* AVLarvore, AVLNo* AVLno) {
     return rsd(AVLarvore, AVLno);
 }
 
-
+/*
 int main() {
     AVLArvore* a = AVLcriar();
 
@@ -278,3 +283,4 @@ int main() {
     printf("\n");
     AVLcontador=0;
 }
+*/

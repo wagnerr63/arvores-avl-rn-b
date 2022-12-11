@@ -28,49 +28,9 @@ void popula(int vetor[], int tamanho){
 }
 
 int main() {
-    /*
-     FILE *arquivo;
-    arquivo = fopen("bMedioCaso.csv", "w");
-    fprintf(arquivo, "%s", "tamanho,esforco;\n");
-
-    int tamanho = 2;
-    
-    for (int i =0;i<10;i++) {
-        ArvoreB* arvore = criaArvoreB(1);
-        bFillWithRandomNumbers(arvore, tamanho);
-
-        printf("\nNúmero de operações no MÉDIO CASO: %d\n", bContador);
-        fprintf(arquivo, "%i,%i;\n", tamanho,bContador);
-        bContador = 0;
-        
-        tamanho = tamanho*2;
-    
-        free(arvore);
-    }
-
-
-    bContador = 0;
-    tamanho = 2;
-    arquivo = fopen("bPiorCaso.csv", "w");
-    fprintf(arquivo, "%s", "tamanho,esforco;\n");
-    for (int j =0;j<10;j++) {
-        ArvoreB* arvorePior = criaArvoreB(1);
-        bFillWithRandomNumbersASC(arvorePior, tamanho);
-
-        printf("\nNúmero de operações no PIOR CASO: %d\n", bContador);
-        
-        fprintf(arquivo, "%i,%i;\n", tamanho,bContador);
-
-
-        bContador = 0;
-        tamanho = tamanho*2;
-
-        free(arvorePior);  
-    }
-    */
-
     extern long int RNcontador;
     extern int bContador;
+    extern long int AVLcontador;
 
     int v[1000]; 
     srand ( time(NULL) );  
@@ -106,13 +66,12 @@ int main() {
             ArvoreB* arvoreB = criaArvoreB(1);
             ArvoreB* arvoreBOrdem5 = criaArvoreB(5);
             ArvoreB* arvoreBOrdem10 = criaArvoreB(10);
-            
-            //AVLArvore* b = AVLcriar(); 
+            AVLArvore* arvoreAVL = AVLcriar(); 
 
             for (int i = 0; i < j; i++){ 
                 RNcontador=0;
                 bContador=0;
-                //printf("%d: %d\n",i, v[i]);
+
                 RNadicionar(a, v[i]);
                 media_rn+=RNcontador; 
 
@@ -125,20 +84,21 @@ int main() {
                 bAdicionaChave(arvoreBOrdem10, v[i]);
                 media_b10+=bContador;
   
-                //AVLcontador=0; 
-                //adicinarAVL=(b, v[i]); 
-                //media_avl+=AVLcontador; 
+                AVLcontador=0; 
+                AVLadicionar(arvoreAVL, v[i]); 
+                media_avl+=AVLcontador; 
 
             } 
             free(a);
             free(arvoreB);
             free(arvoreBOrdem5);
             free(arvoreBOrdem10);
+            free(arvoreAVL);
             //free(v);
         } 
 
         fprintf(arquivomedio, "%d;%ld;", j, media_rn/10); 
-        //fprintf(arquivomedio, "%ld", j, media_avl/10);
+        fprintf(arquivomedio, "%ld;", media_avl/10);
         fprintf(arquivomedio, "%ld;", media_b1/10); 
         fprintf(arquivomedio, "%ld;", media_b5/10); 
         fprintf(arquivomedio, "%ld", media_b10/10); 
@@ -150,11 +110,13 @@ int main() {
         ArvoreB* arvoreBPior = criaArvoreB(1);
         ArvoreB* arvoreBOrdem5Pior = criaArvoreB(5);
         ArvoreB* arvoreBOrdem10Pior = criaArvoreB(10);
-        int bContador1 = 0, bContador5 = 0, bContador10 = 0, contadorRN = 0;
+        AVLArvore* arvoreAVLPior = AVLcriar();
+        long int bContador1 = 0, bContador5 = 0, bContador10 = 0, contadorRN = 0, avlContador = 0;
         for (int i = 1; i <= j; i++){ 
 
             RNcontador=0;
             bContador=0;
+            AVLcontador=0;
             //printf("%d: %d\n",i, v[i]);
             RNadicionar(rnPior, i);
             contadorRN+=RNcontador;
@@ -166,17 +128,22 @@ int main() {
             bContador=0;
             bAdicionaChave(arvoreBOrdem10Pior, i);
             bContador10+=bContador;
+            AVLadicionar(arvoreAVLPior, i);
+            avlContador+=AVLcontador;
+            
+
         }
         free(rnPior);
         free(arvoreBPior);
         free(arvoreBOrdem5Pior);
         free(arvoreBOrdem10Pior); 
+        free(arvoreAVLPior); 
 
         fprintf(arquivopior, "%d;%ld;", j, contadorRN);
-        //fprintf(arquivopior, "%d", j, media_avl/10);
-        fprintf(arquivopior, "%d;", bContador1); 
-        fprintf(arquivopior, "%d;", bContador5); 
-        fprintf(arquivopior, "%d", bContador10); 
+        fprintf(arquivopior, "%ld;", avlContador);
+        fprintf(arquivopior, "%ld;", bContador1); 
+        fprintf(arquivopior, "%ld;", bContador5); 
+        fprintf(arquivopior, "%ld", bContador10); 
         fprintf(arquivopior, "\n"); 
 
     } 
