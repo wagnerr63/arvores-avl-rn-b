@@ -150,14 +150,14 @@ int main() {
         ArvoreB* arvoreBPior = criaArvoreB(1);
         ArvoreB* arvoreBOrdem5Pior = criaArvoreB(5);
         ArvoreB* arvoreBOrdem10Pior = criaArvoreB(10);
-        int bContador1 = 0, bContador5 = 0, bContador10 = 0;
+        int bContador1 = 0, bContador5 = 0, bContador10 = 0, contadorRN = 0;
         for (int i = 1; i <= j; i++){ 
 
             RNcontador=0;
             bContador=0;
             //printf("%d: %d\n",i, v[i]);
             RNadicionar(rnPior, i);
-
+            contadorRN+=RNcontador;
             bAdicionaChave(arvoreBPior, i);
             bContador1+=bContador;
             bContador=0;
@@ -172,7 +172,7 @@ int main() {
         free(arvoreBOrdem5Pior);
         free(arvoreBOrdem10Pior); 
 
-        fprintf(arquivopior, "%d;%ld;", j, RNcontador); 
+        fprintf(arquivopior, "%d;%ld;", j, contadorRN);
         //fprintf(arquivopior, "%d", j, media_avl/10);
         fprintf(arquivopior, "%d;", bContador1); 
         fprintf(arquivopior, "%d;", bContador5); 
